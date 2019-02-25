@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="image_transition">image_transition</string>
+
+    <string name="error_loading_posts">An error occurred</string>
+
+    <string name="details_open_browser_empty_url">Missing shop url</string>
+    <string name="details_open_browser_invalid_url">Invalid browser url</string>
+
+</resources>

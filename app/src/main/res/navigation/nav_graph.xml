@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/gridFragment">
+
+    <fragment
+            android:id="@+id/gridFragment"
+            android:name="dk.eleknet.tattoodemo.app.grid.GridFragment"
+            android:label="GridFragment"
+            tools:layout="@layout/fragment_grid">
+        <action
+                android:id="@+id/action_gridFragment_to_detailsFragment"
+                app:destination="@id/detailsFragment"
+                />
+    </fragment>
+    <fragment
+            android:id="@+id/detailsFragment"
+            android:name="dk.eleknet.tattoodemo.app.details.DetailsFragment"
+            android:label="DetailsFragment"
+            tools:layout="@layout/fragment_details">
+        <argument
+                android:name="postId"
+                app:argType="integer"/>
+        <argument
+                android:name="returnTransition"
+                app:argType="string"/>
+    </fragment>
+</navigation>

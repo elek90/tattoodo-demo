@@ -1,0 +1,117 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "dk.eleknet.tattoodemo"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    flavorDimensions "develop"
+    //Disable for faster build
+    productFlavors {
+        dev {
+            dimension "develop"
+            buildConfigField "int", "HTTP_LOGLEVEL", "2"
+            resConfigs("en", "xxhdpi")
+            versionNameSuffix "-development"
+            aaptOptions.cruncherEnabled = false //Disable PNG crunching or use WebP
+            splits.abi.enable = false //Disable ABI splits
+            splits.density.enable = false //disable density splits
+        }
+        prod {
+            dimension "develop"
+            buildConfigField "int", "HTTP_LOGLEVEL", "0"
+        }
+    }
+
+    buildTypes {
+        debug {
+            resValue "string", "app_name", "TattodoDemo Dev"
+            applicationIdSuffix ".debug"
+            debuggable true
+            buildConfigField "String", "TATTOODO_API_ENDPOINT", "\"https://backend-api.tattoodo.com/\""
+            buildConfigField "String", "TATTOODO_FILE_ENDPOINT", "\"https://tattoodo-mobile-app.imgix.net/\""
+        }
+
+        release {
+            resValue "string", "app_name", "TattodoDemo"
+            minifyEnabled true
+            shrinkResources true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "TATTOODO_API_ENDPOINT", "\"https://backend-api.tattoodo.com/\""
+            buildConfigField "String", "TATTOODO_FILE_ENDPOINT", "\"https://tattoodo-mobile-app.imgix.net/\""
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.appcompat:appcompat:1.0.2"
+    implementation "androidx.core:core-ktx:$ktx_version"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation "com.google.android.material:material:1.0.0"
+
+    //Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.0"
+
+    //Network
+    implementation "com.squareup.okhttp3:okhttp:${okhttp_version}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${okhttp_version}"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+    implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
+
+    //RX
+    implementation "io.reactivex.rxjava2:rxjava:2.2.3"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    implementation 'nl.littlerobots.rxlint:rxlint:1.6'
+
+    //Navigation
+    implementation "android.arch.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation "android.arch.navigation:navigation-ui:$navigation_version"
+
+    //Dagger
+    implementation "com.google.dagger:dagger:${dagger_version}"
+    kapt "com.google.dagger:dagger-compiler:${dagger_version}"
+    compileOnly 'org.glassfish:javax.annotation:10.0-b28'
+
+    //UI
+    implementation ("com.github.bumptech.glide:glide:$glide_version") {
+        exclude group: "com.android.support"
+    }
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
+    implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    //Utilities
+    implementation 'joda-time:joda-time:2.10.1'
+
+    //Log & debug
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'nl.littlerobots.rxlint:rxlint:1.6'
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+
+    // Test
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.23.0'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+}
